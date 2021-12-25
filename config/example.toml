@@ -1,0 +1,16 @@
+[source]
+    dir = "./" # 保存资源的文件
+    request_num = 500 # 基于令牌桶的限流策略
+    user_num = 100 # 用户的数量
+
+[connection]
+    timeout = 500 # 连接超时时间，以毫秒计算
+
+[status]
+    dest = "console"
+    addr = "127.0.0.1:8080" # 将格式化的状态信息发送到指定的ip addr，采用tcp
+
+[log]
+    access_log = "./access_log"
+    error_log = "./error_log"
+
