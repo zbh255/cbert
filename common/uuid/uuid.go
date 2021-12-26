@@ -3,10 +3,12 @@ package uuid
 import (
 	"encoding/binary"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"math/rand"
 	"net"
 	"reflect"
+	"strings"
 	"time"
 	"unsafe"
 )
@@ -17,6 +19,19 @@ var (
 		If there is no network hardware, the value is 0
 	*/
 	hardwareAddr []byte
+
+	// Description of the length of the generated UUID
+	// 32 length
+	uuidLength = map[int]int{
+		0: 8,
+		1: 4,
+		2: 4,
+		3: 4,
+		4: 12,
+	}
+
+	// Error
+	ErrNotUuid = errors.New("not a correct UUID format")
 )
 
 // GetCustomUuid UUID format
@@ -45,6 +60,30 @@ func GetCustomUuid() (string, error) {
 	binary.LittleEndian.PutUint64(slice, two64)
 	str := hex.EncodeToString(buffer[:])
 	return fmt.Sprintf("%s-%s-%s-%s-%s", str[:8], str[8:12], str[12:16], str[16:20], str[20:32]), nil
+}
+
+func DecodeUuid(s string) ([]byte, error) {
+	buf := strings.Split(s, "-")
+	if len(buf) != 5 {
+		return nil, ErrNotUuid
+	}
+	builder := strings.Builder{}
+	builder.Grow(16)
+	for k, v := range buf {
+		if !(len(v) == uuidLength[k]) {
+			return nil,ErrNotUuid
+		} else {
+			builder.WriteString(v)
+		}
+	}
+	str := builder.String()
+	sh := (*reflect.StringHeader)(unsafe.Pointer(&str))
+	bytes := *(*[]byte)(unsafe.Pointer(&reflect.SliceHeader{
+		Data: sh.Data,
+		Len:  sh.Len,
+		Cap:  sh.Len,
+	}))
+	return bytes,nil
 }
 
 func init() {
