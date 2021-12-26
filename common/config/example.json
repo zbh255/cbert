@@ -1,6 +1,7 @@
 {
   "source": {
     "dir": "./",
+    "user_config": "./user_config.json",
     "request_num": 500,
     "user_num": 100
   },
