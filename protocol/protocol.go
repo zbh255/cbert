@@ -3,7 +3,7 @@ package protocol
 type HandshakeRequest struct {
 	Version  byte
 	Reserved byte
-	UuidV4   [16]byte
+	UuidV4   [32]byte
 }
 
 type HandshakeResponse struct {
