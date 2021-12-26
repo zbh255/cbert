@@ -43,4 +43,12 @@ func TestUuidGenerator(t *testing.T) {
 		}
 		hashTable[uuid] = struct{}{}
 	}
+	// check uuid
+	for k := range hashTable{
+		_,err := DecodeUuid(k)
+		if err != nil {
+			t.Error(err)
+			return
+		}
+	}
 }
