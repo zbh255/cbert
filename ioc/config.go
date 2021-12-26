@@ -18,12 +18,12 @@ func GetUserConfig() *config.UserConf {
 }
 
 func RegisterProjectConfig(filePath string) error {
-	confBytes,err := ioutil.ReadFile(filePath)
+	confBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return err
 	}
 	api := config.NewProjectConfig()
-	api,err = api.DecodeConfig(confBytes)
+	api, err = api.DecodeConfig(confBytes)
 	if err != nil {
 		return err
 	}
@@ -32,12 +32,12 @@ func RegisterProjectConfig(filePath string) error {
 }
 
 func RegisterUserConfig(filePath string) error {
-	confBytes,err := ioutil.ReadFile(filePath)
+	confBytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return err
 	}
 	api := config.NewUserConfig()
-	api,err = api.DecodeConfig(confBytes)
+	api, err = api.DecodeConfig(confBytes)
 	if err != nil {
 		return err
 	}
@@ -46,5 +46,5 @@ func RegisterUserConfig(filePath string) error {
 }
 
 func init() {
-	configObj = make(map[string]interface{},2)
+	configObj = make(map[string]interface{}, 2)
 }
