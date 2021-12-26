@@ -4,6 +4,7 @@ import (
 	"errors"
 	"io"
 	"log"
+	"sync"
 )
 
 const (
@@ -35,6 +36,7 @@ func NewLogger(io io.Writer,level int) Logger {
 }
 
 type stdLogger struct {
+	lock sync.Mutex
 	lg *log.Logger
 	level int
 }
@@ -44,6 +46,8 @@ func (s *stdLogger) Level() int {
 }
 
 func (s *stdLogger) SetLevel(level int) {
+	s.lock.Lock()
+	defer s.lock.Unlock()
 	s.level = level
 }
 
@@ -56,6 +60,7 @@ func (s *stdLogger) Debug(message string) error {
 	if !s.checkLevel(DEBUG) {
 		return ErrLevelBig
 	}
+	s.lg.Printf("[Debug] %s\n", message)
 	return nil
 }
 
@@ -63,6 +68,7 @@ func (s *stdLogger) Info(message string) error {
 	if !s.checkLevel(INFO) {
 		return ErrLevelBig
 	}
+	s.lg.Printf("[Info] %s\n", message)
 	return nil
 }
 
@@ -70,6 +76,7 @@ func (s *stdLogger) Trace(message string) error {
 	if !s.checkLevel(TRACE) {
 		return ErrLevelBig
 	}
+	s.lg.Printf("[Trace] %s\n",message)
 	return nil
 }
 
@@ -77,5 +84,6 @@ func (s *stdLogger) Error(message string) error {
 	if !s.checkLevel(ERROR) {
 		return ErrLevelBig
 	}
+	s.lg.Printf("[Error] %s\n",message)
 	return nil
 }
