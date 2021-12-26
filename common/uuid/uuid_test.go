@@ -15,7 +15,7 @@ func TestExample(t *testing.T) {
 	buf := uint64(0)
 	// little endian handling
 	for k := range Int64 {
-		*(*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(&buf)) + uintptr(7 - k))) = Int64[k]
+		*(*byte)(unsafe.Pointer(uintptr(unsafe.Pointer(&buf)) + uintptr(7-k))) = Int64[k]
 	}
 	uBuf := *(*uint64)(unsafe.Pointer(&Int64))
 	slice := *(*[]byte)(unsafe.Pointer(&reflect.SliceHeader{
@@ -30,14 +30,14 @@ func TestExample(t *testing.T) {
 
 func TestUuidGenerator(t *testing.T) {
 	// testing 1 million equals
-	hashTable := make(map[string]struct{},100000)
+	hashTable := make(map[string]struct{}, 100000)
 	for i := 0; i < 100000; i++ {
-		uuid,err := GetCustomUuid()
+		uuid, err := GetCustomUuid()
 		if err != nil {
 			t.Error(err)
 			return
 		}
-		_,ok := hashTable[uuid]
+		_, ok := hashTable[uuid]
 		if ok {
 			t.Error(errors.New("uuid generation failed"))
 		}

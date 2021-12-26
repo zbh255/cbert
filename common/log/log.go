@@ -27,17 +27,17 @@ type Logger interface {
 	Error(message string) error
 }
 
-func NewLogger(io io.Writer,level int) Logger {
-	lg := log.New(io,"",log.Ltime | log.Lshortfile)
+func NewLogger(io io.Writer, level int) Logger {
+	lg := log.New(io, "", log.LstdFlags)
 	return &stdLogger{
-		lg: lg,
+		lg:    lg,
 		level: level,
 	}
 }
 
 type stdLogger struct {
-	lock sync.Mutex
-	lg *log.Logger
+	lock  sync.Mutex
+	lg    *log.Logger
 	level int
 }
 
@@ -53,7 +53,7 @@ func (s *stdLogger) SetLevel(level int) {
 
 // Verify the current level. If it is lower than or higher than the set level, it will not be output
 func (s *stdLogger) checkLevel(level int) bool {
-	return s.level < level
+	return s.level > level
 }
 
 func (s *stdLogger) Debug(message string) error {
@@ -76,7 +76,7 @@ func (s *stdLogger) Trace(message string) error {
 	if !s.checkLevel(TRACE) {
 		return ErrLevelBig
 	}
-	s.lg.Printf("[Trace] %s\n",message)
+	s.lg.Printf("[Trace] %s\n", message)
 	return nil
 }
 
@@ -84,6 +84,6 @@ func (s *stdLogger) Error(message string) error {
 	if !s.checkLevel(ERROR) {
 		return ErrLevelBig
 	}
-	s.lg.Printf("[Error] %s\n",message)
+	s.lg.Printf("[Error] %s\n", message)
 	return nil
 }

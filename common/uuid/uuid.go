@@ -19,7 +19,6 @@ var (
 	hardwareAddr []byte
 )
 
-
 // GetCustomUuid UUID format
 // 64 bit mac addr XOR random seed | 64 bit Random number
 // run in a use little endian byte order computer
@@ -37,27 +36,27 @@ func GetCustomUuid() (string, error) {
 		Len:  8,
 		Cap:  8,
 	}))
-	binary.LittleEndian.PutUint64(slice,one64)
+	binary.LittleEndian.PutUint64(slice, one64)
 	slice = *(*[]byte)(unsafe.Pointer(&reflect.SliceHeader{
 		Data: uintptr(unsafe.Pointer(&buffer)) + uintptr(len(slice)),
 		Len:  8,
 		Cap:  8,
 	}))
-	binary.LittleEndian.PutUint64(slice,two64)
+	binary.LittleEndian.PutUint64(slice, two64)
 	str := hex.EncodeToString(buffer[:])
-	return fmt.Sprintf("%s-%s-%s-%s-%s",str[:8],str[8:12],str[12:16],str[16:20],str[20:32]),nil
+	return fmt.Sprintf("%s-%s-%s-%s-%s", str[:8], str[8:12], str[12:16], str[16:20], str[20:32]), nil
 }
 
 func init() {
-	interfaces,err := net.Interfaces()
-	hardwareAddr = make([]byte,8)
+	interfaces, err := net.Interfaces()
+	hardwareAddr = make([]byte, 8)
 	// no network interfaces
 	if len(interfaces) == 0 || err != nil {
 		return
 	}
-	for _,v := range interfaces {
+	for _, v := range interfaces {
 		if v.HardwareAddr != nil {
-			copy(hardwareAddr,v.HardwareAddr)
+			copy(hardwareAddr, v.HardwareAddr)
 			return
 		}
 	}

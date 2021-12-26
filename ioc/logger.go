@@ -29,13 +29,13 @@ func GetErrorLogger() log.Logger {
 }
 
 func RegisterAccessLogger(writer io.Writer) {
-	loggers["accessLog"] = log.NewLogger(writer,log.DEBUG)
+	loggers["accessLog"] = log.NewLogger(writer, log.DEBUG)
 }
 
 func RegisterErrorLogger(writer io.Writer) {
-	loggers["errorLog"] = log.NewLogger(writer,log.ERROR)
+	loggers["errorLog"] = log.NewLogger(writer, log.ERROR)
 }
 
 func init() {
-	loggers["stdOut"] = log.NewLogger(os.Stdout,log.ERROR)
+	loggers["stdOut"] = log.NewLogger(os.Stdout, log.ERROR)
 }
