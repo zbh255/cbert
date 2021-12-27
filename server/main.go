@@ -2,7 +2,9 @@ package main
 
 import (
 	"flag"
+	"github.com/zbh255/cbert/connect"
 	"github.com/zbh255/cbert/ioc"
+	"net"
 	"os"
 )
 
@@ -31,6 +33,29 @@ func main() {
 	defer errorLogWriter.Close()
 	ioc.RegisterAccessLogger(accessLogWriter)
 	ioc.RegisterErrorLogger(errorLogWriter)
+	// to live recover error
+	defer func() {
+		if err := recover(); err != nil {
+			errLog := ioc.GetErrorLogger()
+			errLog.Error(err.(error).Error())
+			panic(err)
+		}
+	}()
+	// handler user source
+	handlerSource()
 	// register command handler
 	handleGenerator()
+	// handler user add source request
+	handlerAddSource()
+	mainStart()
+}
+
+func mainStart() {
+	projectConfig := ioc.GetProjectConfig()
+	listener, err := net.Listen("tcp",projectConfig.Connection.Addr)
+	if err != nil {
+		panic(err)
+	}
+	server := connect.NewConnection(listener)
+	_ = server.Start()
 }
