@@ -7,8 +7,10 @@ const (
 )
 
 const (
-	REPLY_SUCCESS byte = 0x00
-	REPLY_FAILED  byte = 0x01
+	REPLY_SUCCESS     byte = 0x00
+	REPLY_FAILED      byte = 0x01
+	REPLY_AUTH_FAILED byte = 0x02
+	REPLY_NOT_FILE    byte = 0x03
 )
 
 const (
