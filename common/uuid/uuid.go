@@ -71,7 +71,7 @@ func DecodeUuid(s string) ([]byte, error) {
 	builder.Grow(16)
 	for k, v := range buf {
 		if !(len(v) == uuidLength[k]) {
-			return nil,ErrNotUuid
+			return nil, ErrNotUuid
 		} else {
 			builder.WriteString(v)
 		}
@@ -83,7 +83,7 @@ func DecodeUuid(s string) ([]byte, error) {
 		Len:  sh.Len,
 		Cap:  sh.Len,
 	}))
-	return bytes,nil
+	return bytes, nil
 }
 
 func init() {
