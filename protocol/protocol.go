@@ -18,3 +18,11 @@ type MessageRequest struct {
 	FileNameLength byte
 	FileName       []byte
 }
+
+type MessageResponse struct {
+	Version        byte
+	Reserved       byte
+	Reply          byte
+	FileNameLength byte
+	FileName       []byte
+}

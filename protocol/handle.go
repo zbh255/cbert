@@ -4,32 +4,32 @@ import "io"
 
 func DecodeHandshakeRequest(reader io.Reader) (*HandshakeRequest, error) {
 	// 1 + 1 + 32
-	buffer := make([]byte,34)
-	n,err := reader.Read(buffer)
+	buffer := make([]byte, 34)
+	n, err := reader.Read(buffer)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	if n != len(buffer) {
-		return nil,ErrProtocolFormatFailed
+		return nil, ErrProtocolFormatFailed
 	}
 	request := new(HandshakeRequest)
 	request.Version = buffer[0]
 	request.Reserved = buffer[1]
 	copy(request.UuidV4[:32], buffer[2:])
-	return request,nil
+	return request, nil
 }
 
 func EncodeHandshakeResponse(rep *HandshakeResponse) []byte {
-	buffer := make([]byte,0,3)
-	buffer = append(buffer,rep.Version)
-	buffer = append(buffer,rep.Reserved)
-	buffer = append(buffer,rep.Reply)
+	buffer := make([]byte, 0, 3)
+	buffer = append(buffer, rep.Version)
+	buffer = append(buffer, rep.Reserved)
+	buffer = append(buffer, rep.Reply)
 	return buffer
 }
 
 func DecodeMessageRequest(reader io.Reader) (*MessageRequest, error) {
-	buf1 := make([]byte,3)
-	n,err := reader.Read(buf1)
+	buf1 := make([]byte, 3)
+	n, err := reader.Read(buf1)
 	if err != nil {
 		return nil, err
 	}
@@ -38,11 +38,11 @@ func DecodeMessageRequest(reader io.Reader) (*MessageRequest, error) {
 	}
 	request := new(MessageRequest)
 	request.Version = buf1[0]
-	request.Command= buf1[1]
+	request.Command = buf1[1]
 	request.FileNameLength = buf1[2]
 
-	buf2 := make([]byte,request.FileNameLength)
-	n,err = reader.Read(buf2)
+	buf2 := make([]byte, request.FileNameLength)
+	n, err = reader.Read(buf2)
 	if err != nil {
 		return nil, err
 	}
@@ -51,4 +51,13 @@ func DecodeMessageRequest(reader io.Reader) (*MessageRequest, error) {
 	}
 	request.FileName = buf2
 	return request, err
+}
+
+func EncodeMessageResponse(response *MessageResponse) []byte {
+	buf := make([]byte, 0, 32)
+	buf = append(buf, response.Version)
+	buf = append(buf, response.Reserved)
+	buf = append(buf, response.Reply)
+	buf = append(buf, append([]byte{response.FileNameLength}, response.FileName...)...)
+	return buf
 }
