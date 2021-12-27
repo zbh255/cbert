@@ -41,7 +41,7 @@ func RegisterUserConfig(filePath string) error {
 	if err != nil {
 		return err
 	}
-	configObj["project"] = api
+	configObj["user"] = api
 	return nil
 }
 
