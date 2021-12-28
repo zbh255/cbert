@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/zbh255/cbert/connect"
 	"github.com/zbh255/cbert/ioc"
 	"net"
@@ -51,11 +52,14 @@ func main() {
 }
 
 func mainStart() {
+	stdLog := ioc.GetStdLogger()
 	projectConfig := ioc.GetProjectConfig()
 	listener, err := net.Listen("tcp",projectConfig.Connection.Addr)
 	if err != nil {
 		panic(err)
 	}
+	addr := listener.Addr()
+	stdLog.Info(fmt.Sprintf("listen : [%s] -> %s",addr.Network(),addr.String()))
 	server := connect.NewConnection(listener)
 	_ = server.Start()
 }

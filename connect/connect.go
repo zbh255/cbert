@@ -3,6 +3,7 @@ package connect
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"github.com/zbh255/cbert/common/uuid"
 	"github.com/zbh255/cbert/ioc"
 	"github.com/zbh255/cbert/protocol"
@@ -27,13 +28,18 @@ func NewConnection(listener net.Listener) *Connection {
 }
 
 func (c *Connection) Start() error {
+	stdLog := ioc.GetStdLogger()
 	errLog := ioc.GetErrorLogger()
 	defer c.listener.Close()
+	stdLog.Info("start accept")
 	for {
 		conn, err := c.listener.Accept()
 		if err != nil {
+			stdLog.Error("client connection error: " + err.Error())
 			return err
 		}
+		connAddr := conn.RemoteAddr()
+		stdLog.Info(fmt.Sprintf("client open connection : [%s] -> %s",connAddr.Network(),connAddr.String()))
 		go func() {
 			err := c.handlerConnections(conn)
 			if err != nil {
@@ -46,6 +52,9 @@ func (c *Connection) Start() error {
 // close connection and delete map hash key
 func (c *Connection) CloseConnection(conn net.Conn) error {
 	c.pool.Delete(conn)
+	stdLog := ioc.GetStdLogger()
+	connAddr := conn.RemoteAddr()
+	stdLog.Info(fmt.Sprintf("client exit connection : [%s] -> %s",connAddr.Network(),connAddr.String()))
 	return conn.Close()
 }
 
