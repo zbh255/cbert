@@ -39,7 +39,6 @@ func handlerSource() {
 
 func handlerAddSource() {
 	if *fileName == "" || *uuidStr == "" {
-		flag.PrintDefaults()
 		return
 	}
 	projectConfig := ioc.GetProjectConfig()
