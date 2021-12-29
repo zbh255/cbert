@@ -10,7 +10,7 @@ const (
 	BUFFER_SIZE int = 512
 )
 
-// link : https://github.com/zbh255/ss5-simple
+// link : https://github.com/zbh255/ss5-simple/blob/main/net/connect.go#L65
 func ReadAll(reader io.Reader) ([]byte,error) {
 	readN := 0
 	buf := make([]byte, BUFFER_SIZE)
