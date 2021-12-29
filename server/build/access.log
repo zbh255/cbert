@@ -1,0 +1,11 @@
+20:48:10 log.go:71: [Info] created uuid successfully
+2021/12/26 21:00:22 [Info] created uuid successfully
+2021/12/26 23:50:17 [Info] 3c85ccdb-bd5e-c416-6094-818ad7967c77 create file: exception.json successfully
+2021/12/28 19:19:56 [Info] start accept
+2021/12/28 19:20:00 [Info] client connection : [tcp] -> 127.0.0.1:9001
+2021/12/28 19:20:18 [Info] client connection : [tcp] -> 127.0.0.1:9001
+2021/12/28 19:30:12 [Info] start accept
+2021/12/28 19:30:15 [Info] client connection : [tcp] -> 127.0.0.1:9001
+2021/12/28 19:31:46 [Info] start accept
+2021/12/28 19:32:42 [Info] start accept
+2021/12/28 20:20:58 [Info] start accept
